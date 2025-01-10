@@ -11,6 +11,9 @@ class RegisterFile extends Module {
     val w_data    = Input(SInt(32.W))
     val rdata1    = Output(SInt(32.W))
     val rdata2    = Output(SInt(32.W))
+    //Debug Port(new)
+    val debug_read_reg  = Input(UInt(5.W))   
+    val debug_reg_value = Output(SInt(32.W)) 
   })
   val regfile = RegInit(VecInit(Seq.fill(32)(0.S(32.W))))
 
@@ -20,4 +23,6 @@ class RegisterFile extends Module {
   when(io.reg_write && io.w_reg =/= 0.U) {
     regfile(io.w_reg) := io.w_data
   }
+  //Debug read(new)
+   io.debug_reg_value := regfile(io.debug_read_reg)
 }

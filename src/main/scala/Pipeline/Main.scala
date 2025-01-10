@@ -5,6 +5,9 @@ import chisel3.util._
 class PIPELINE(initFile: String) extends Module {
     val io = IO(new Bundle {
         val out = Output (SInt(4.W))
+        //Debug port IO
+        val debug_read_reg  = Input(UInt(5.W))
+        val debug_reg_value = Output(SInt(32.W))
     })
     //  Pipes of stages 
     val IF_ID_              =   Module(new IF_ID)
@@ -315,7 +318,11 @@ class PIPELINE(initFile: String) extends Module {
       d := 0.S
     }
     RegFile.io.w_data := d  // Write back data
-  
+    
+    //PIPELINE_DebugPort IO to RegFile_DebugPort IO
+    RegFile.io.debug_read_reg := io.debug_read_reg
+    io.debug_reg_value        := RegFile.io.debug_reg_value
+
     io.out := 0.S
 
 }

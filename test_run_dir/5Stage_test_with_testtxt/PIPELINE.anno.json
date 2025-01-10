@@ -4,6 +4,13 @@
     "file":"test_run_dir/5Stage_test_with_testtxt/PIPELINE.lo.fir"
   },
   {
+    "class":"firrtl.transforms.CombinationalPath",
+    "sink":"~PIPELINE|PIPELINE>io_debug_reg_value",
+    "sources":[
+      "~PIPELINE|PIPELINE>io_debug_read_reg"
+    ]
+  },
+  {
     "class":"firrtl.EmitCircuitAnnotation",
     "emitter":"firrtl.LowFirrtlEmitter"
   },
