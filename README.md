@@ -1,3 +1,7 @@
+## Credits / Original Author
+
+This project is based on or derived from the [5-stage-RV32I](https://github.com/kinzafatim/5-Stage-RV32I).  
+Special thanks to **@kinzafatim** for providing the original code and license.
 # 5-Stage Pipeline Processor in Chisel(from kinzafatim)
 
 This repository contains a 5-stage pipeline processor implemented using the Chisel hardware description language. The processor follows the classic RISC-V 5-stage pipeline design, which includes the following stages:
