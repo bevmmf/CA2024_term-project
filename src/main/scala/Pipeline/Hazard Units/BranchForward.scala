@@ -61,16 +61,16 @@ class BranchForward extends Module {
 
   // Jalr forwarding logic
   }.elsewhen(io.ctrl_branch === 0.U) {
-    when(io.ID_EX_RD =/= 0.U && io.ID_EX_memRd =/= 1.U && io.ID_EX_RD === io.rs1) {
-      io.forward_rs1 := "b0110".U
-    }.elsewhen(io.EX_MEM_RD =/= 0.U && io.EX_MEM_memRd =/= 1.U && io.EX_MEM_RD === io.rs1 && !(io.ID_EX_RD =/= 0.U && io.ID_EX_RD === io.rs1)) {
-      io.forward_rs1 := "b0111".U
-    }.elsewhen(io.EX_MEM_RD =/= 0.U && io.EX_MEM_memRd === 1.U && io.EX_MEM_RD === io.rs1 && !(io.ID_EX_RD =/= 0.U && io.ID_EX_RD === io.rs1)) {
-      io.forward_rs1 := "b1001".U
-    }.elsewhen(io.MEM_WB_RD =/= 0.U && io.MEM_WB_memRd =/= 1.U && io.MEM_WB_RD === io.rs1 && !(io.ID_EX_RD =/= 0.U && io.ID_EX_RD === io.rs1) && !(io.EX_MEM_RD =/= 0.U && io.EX_MEM_RD === io.rs1)) {
-      io.forward_rs1 := "b1000".U
-    }.elsewhen(io.MEM_WB_RD =/= 0.U && io.MEM_WB_memRd === 1.U && io.MEM_WB_RD === io.rs1 && !(io.ID_EX_RD =/= 0.U && io.ID_EX_RD === io.rs1) && !(io.EX_MEM_RD =/= 0.U && io.EX_MEM_RD === io.rs1)) {
-      io.forward_rs1 := "b1010".U
+    when(io.ID_EX_RD =/= 0.U && io.ID_EX_memRd =/= 1.U && io.ID_EX_RD === io.rs1) {  //ID/EX Hazard => rd ≠ x0 、 not load 、 rs1前 = rd後 
+      io.forward_rs1 := "b0110".U //6 Alu.out
+    }.elsewhen(io.EX_MEM_RD =/= 0.U && io.EX_MEM_memRd =/= 1.U && io.EX_MEM_RD === io.rs1 && !(io.ID_EX_RD =/= 0.U && io.ID_EX_RD === io.rs1)) { //EX/Mem Hazard => rd ≠ x0 、 not load 、 rs1前 = rd後 、not ID/EX Hazard 
+      io.forward_rs1 := "b0111".U //7 EX_MEM_M.io.EXMEM_alu_out
+    }.elsewhen(io.EX_MEM_RD =/= 0.U && io.EX_MEM_memRd === 1.U && io.EX_MEM_RD === io.rs1 && !(io.ID_EX_RD =/= 0.U && io.ID_EX_RD === io.rs1)) { //load EX_Mem Hazard => rd ≠ x0 、 is load 、 rs1前 = rd後 、 not not load ID/EX Hazard
+      io.forward_rs1 := "b1001".U //9 DataMemory.io.dataOut
+    }.elsewhen(io.MEM_WB_RD =/= 0.U && io.MEM_WB_memRd =/= 1.U && io.MEM_WB_RD === io.rs1 && !(io.ID_EX_RD =/= 0.U && io.ID_EX_RD === io.rs1) && !(io.EX_MEM_RD =/= 0.U && io.EX_MEM_RD === io.rs1)) { //Mem/WB Hazard => rd ≠ x0 、 not load 、 rs1前 = rd後 、not ID/EX Hazard、not ID/EX Hazard 
+      io.forward_rs1 := "b1000".U //8 RegFile.io.w_data
+    }.elsewhen(io.MEM_WB_RD =/= 0.U && io.MEM_WB_memRd === 1.U && io.MEM_WB_RD === io.rs1 && !(io.ID_EX_RD =/= 0.U && io.ID_EX_RD === io.rs1) && !(io.EX_MEM_RD =/= 0.U && io.EX_MEM_RD === io.rs1)) { //load MEM_WB Hazard => rd ≠ x0 、 is load 、 rs1前 = rd後 、 not not load ID/EX Hazard、not not load EX/Mem Hazard 
+      io.forward_rs1 := "b1010".U //10 RegFile.io.w_data 
     }
   }
 }

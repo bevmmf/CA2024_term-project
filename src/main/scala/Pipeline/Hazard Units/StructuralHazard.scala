@@ -14,14 +14,14 @@ class StructuralHazard extends Module {
   })
 
   // Determine if forwarding is needed for rs1
-  when(io.MEM_WB_regWr && io.MEM_WB_Rd === io.rs1) {
+  when(io.MEM_WB_regWr && io.MEM_WB_Rd === io.rs1 && io.MEM_WB_Rd =/= 0.U) {
     io.fwd_rs1 := true.B
   }.otherwise {
     io.fwd_rs1 := false.B
   }
 
   // Determine if forwarding is needed for rs2
-  when(io.MEM_WB_regWr && io.MEM_WB_Rd === io.rs2) {
+  when(io.MEM_WB_regWr && io.MEM_WB_Rd === io.rs2 && io.MEM_WB_Rd =/= 0.U) {
     io.fwd_rs2 := true.B
   }.otherwise {
     io.fwd_rs2 := false.B

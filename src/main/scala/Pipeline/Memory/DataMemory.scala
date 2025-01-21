@@ -1,6 +1,7 @@
 package Pipeline
 import chisel3._
 import chisel3.util._
+import chisel3.util.experimental.loadMemoryFromFile
 
 class DataMemory extends Module {
   val io = IO(new Bundle {
@@ -11,11 +12,13 @@ class DataMemory extends Module {
     val dataOut     = Output(SInt(32.W))        // Data output
   })
   val Dmemory = Mem(1024, SInt(32.W))
-  io.dataOut := 0.S
 
+  io.dataOut := 0.S
+  // write
   when(io.mem_write) {
     Dmemory.write(io.addr, io.dataIn)
   }
+  // read
   when(io.mem_read) {
     io.dataOut := Dmemory.read(io.addr)
   }
